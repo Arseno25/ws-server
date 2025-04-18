@@ -1,0 +1,57 @@
+{
+    "name": "ws-server",
+    "version": "1.0.0",
+    "description": "WebSocket server with clean architecture for real-time communication",
+    "main": "src/index.js",
+    "type": "module",
+    "author": {
+      "name": "Arseno25",
+      "url": "https://github.com/Arseno25"
+    },
+    "license": "MIT",
+    "keywords": [
+      "websocket",
+      "ws",
+      "real-time",
+      "server",
+      "nodejs",
+      "javascript",
+      "es6",
+      "clean-architecture",
+      "winston",
+      "logging"
+    ],
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Arseno25/ws-server.git"
+    },
+    "bugs": {
+      "url": "https://github.com/Arseno25/ws-server/issues"
+    },
+    "homepage": "https://github.com/Arseno25/ws-server#readme",
+    "scripts": {
+      "start": "node src/index.js",
+      "dev": "nodemon src/index.js",
+      "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+      "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
+    },
+    "dependencies": {
+      "ws": "^8.16.0",
+      "dotenv": "^16.4.5",
+      "winston": "^3.11.0"
+    },
+    "devDependencies": {
+      "nodemon": "^3.1.0",
+      "jest": "^29.7.0"
+    },
+    "jest": {
+      "transform": {},
+      "testEnvironment": "node",
+      "moduleNameMapper": {
+        "^(\\.{1,2}/.*)\\.js$": "$1"
+      }
+    },
+    "engines": {
+      "node": ">=14.0.0"
+    }
+  }
