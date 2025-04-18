@@ -5,7 +5,7 @@
 <a name="english"></a>
 # English
 
-A clean architecture WebSocket server implementation for real-time communication.
+A clean architecture WebSocket server implementation for real-time communication with robust features and comprehensive examples.
 
 ## Features
 
@@ -18,13 +18,101 @@ A clean architecture WebSocket server implementation for real-time communication
   - Console logs with colors
   - File-based logging
   - Separate error log file
+- Auto-reconnect capability
+- Message queuing
+- Multiple client support
 
 ## Installation
 
 1. Clone the repository
+```bash
+git clone https://github.com/Arseno25/ws-server.git
+cd ws-server
+```
+
 2. Install dependencies:
 ```bash
 npm install
+```
+
+## Configuration
+
+Create a `.env` file in the root directory with the following variables:
+```
+PORT=8080
+ALLOWED_ORIGINS=*
+LOG_LEVEL=info
+```
+
+## Logging
+
+The server uses Winston for structured logging with the following features:
+- Console output with colored log levels
+- All logs are saved to `logs/combined.log`
+- Error logs are separately saved to `logs/error.log`
+- Timestamp format: YYYY-MM-DD HH:mm:ss
+
+Log levels used:
+- `error`: For errors and exceptions
+- `warn`: For warning conditions
+- `info`: For general information
+- `debug`: For detailed debugging information
+
+## Running the Server
+
+Development mode:
+```bash
+npm run dev
+```
+
+Production mode:
+```bash
+npm start
+```
+
+## Message Types
+
+The server supports the following message types:
+
+1. `echo` - Echoes back the received message
+2. `broadcast` - Broadcasts the message to all connected clients
+
+Example message format:
+```javascript
+{
+    "type": "echo",
+    "payload": "Hello, World!"
+}
+```
+
+## Client Examples
+
+The repository includes three different client implementations:
+
+### 1. Basic Client (`examples/basic-client.js`)
+Simple client for basic WebSocket communication:
+```javascript
+const client = new BasicClient('ws://localhost:8080');
+await client.connect();
+client.send('echo', 'Hello, Server!');
+```
+
+### 2. Broadcast Client (`examples/broadcast-client.js`)
+Client with broadcast capabilities and multiple client simulation:
+```javascript
+const client = new BroadcastClient('ws://localhost:8080', 'Client1');
+await client.connect();
+client.broadcast('Hello everyone!');
+```
+
+### 3. Auto-reconnect Client (`examples/auto-reconnect-client.js`)
+Robust client with auto-reconnect and message queuing:
+```javascript
+const client = new AutoReconnectClient('ws://localhost:8080', {
+    reconnectInterval: 2000,
+    maxReconnectAttempts: 3
+});
+await client.connect();
 ```
 
 ## Ubuntu Server Setup with PM2
@@ -87,83 +175,36 @@ pm2 stop ws-server
 pm2 delete ws-server
 ```
 
-## Configuration
+## Testing
 
-Create a `.env` file in the root directory with the following variables:
-```
-PORT=8080
-ALLOWED_ORIGINS=http://localhost:3000,http://example.com
-```
-
-## Logging
-
-The server uses Winston for structured logging with the following features:
-- Console output with colored log levels
-- All logs are saved to `logs/combined.log`
-- Error logs are separately saved to `logs/error.log`
-- Timestamp format: YYYY-MM-DD HH:mm:ss
-
-Log levels used:
-- `error`: For errors and exceptions
-- `warn`: For warning conditions
-- `info`: For general information
-- `debug`: For detailed debugging information
-
-## Running the Server
-
-Development mode:
+Run tests:
 ```bash
-npm run dev
+npm test
 ```
 
-Production mode:
+Run tests in watch mode:
 ```bash
-npm start
+npm run test:watch
 ```
 
-## Message Types
+## Contributing
 
-The server supports the following message types:
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-1. `echo` - Echoes back the received message
-2. `broadcast` - Broadcasts the message to all connected clients
+## License
 
-Example message format:
-```javascript
-{
-    "type": "echo",
-    "payload": "Hello, World!"
-}
-```
-
-## Client Implementation
-
-Example client connection:
-```javascript
-const ws = new WebSocket('ws://localhost:8080');
-
-ws.onopen = () => {
-    console.log('Connected to server');
-};
-
-ws.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    console.log('Received:', data);
-};
-
-// Send a message
-ws.send(JSON.stringify({
-    type: 'echo',
-    payload: 'Hello, Server!'
-}));
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 <a name="bahasa-indonesia"></a>
 # Bahasa Indonesia
 
-Implementasi server WebSocket dengan arsitektur bersih untuk komunikasi real-time.
+Implementasi server WebSocket dengan arsitektur bersih untuk komunikasi real-time dengan fitur lengkap dan contoh yang komprehensif.
 
 ## Fitur
 
@@ -176,13 +217,101 @@ Implementasi server WebSocket dengan arsitektur bersih untuk komunikasi real-tim
   - Log konsol dengan warna
   - Pencatatan berbasis file
   - File log kesalahan terpisah
+- Kemampuan auto-reconnect
+- Antrian pesan
+- Dukungan multi-client
 
 ## Instalasi
 
 1. Clone repositori
+```bash
+git clone https://github.com/Arseno25/ws-server.git
+cd ws-server
+```
+
 2. Pasang dependensi:
 ```bash
 npm install
+```
+
+## Konfigurasi
+
+Buat file `.env` di direktori utama dengan variabel berikut:
+```
+PORT=8080
+ALLOWED_ORIGINS=*
+LOG_LEVEL=info
+```
+
+## Pencatatan (Logging)
+
+Server menggunakan Winston untuk pencatatan terstruktur dengan fitur berikut:
+- Output konsol dengan level log berwarna
+- Semua log disimpan di `logs/combined.log`
+- Log kesalahan disimpan terpisah di `logs/error.log`
+- Format timestamp: YYYY-MM-DD HH:mm:ss
+
+Level log yang digunakan:
+- `error`: Untuk kesalahan dan pengecualian
+- `warn`: Untuk kondisi peringatan
+- `info`: Untuk informasi umum
+- `debug`: Untuk informasi debugging detail
+
+## Menjalankan Server
+
+Mode pengembangan:
+```bash
+npm run dev
+```
+
+Mode produksi:
+```bash
+npm start
+```
+
+## Tipe Pesan
+
+Server mendukung tipe pesan berikut:
+
+1. `echo` - Mengembalikan pesan yang diterima
+2. `broadcast` - Menyebarkan pesan ke semua klien yang terhubung
+
+Contoh format pesan:
+```javascript
+{
+    "type": "echo",
+    "payload": "Halo, Dunia!"
+}
+```
+
+## Contoh Client
+
+Repositori menyertakan tiga implementasi client yang berbeda:
+
+### 1. Basic Client (`examples/basic-client.js`)
+Client sederhana untuk komunikasi WebSocket dasar:
+```javascript
+const client = new BasicClient('ws://localhost:8080');
+await client.connect();
+client.send('echo', 'Halo, Server!');
+```
+
+### 2. Broadcast Client (`examples/broadcast-client.js`)
+Client dengan kemampuan broadcast dan simulasi multi-client:
+```javascript
+const client = new BroadcastClient('ws://localhost:8080', 'Client1');
+await client.connect();
+client.broadcast('Halo semua!');
+```
+
+### 3. Auto-reconnect Client (`examples/auto-reconnect-client.js`)
+Client tangguh dengan auto-reconnect dan antrian pesan:
+```javascript
+const client = new AutoReconnectClient('ws://localhost:8080', {
+    reconnectInterval: 2000,
+    maxReconnectAttempts: 3
+});
+await client.connect();
 ```
 
 ## Setup Server Ubuntu dengan PM2
@@ -245,73 +374,26 @@ pm2 stop ws-server
 pm2 delete ws-server
 ```
 
-## Konfigurasi
+## Testing
 
-Buat file `.env` di direktori utama dengan variabel berikut:
-```
-PORT=8080
-ALLOWED_ORIGINS=http://localhost:3000,http://example.com
-```
-
-## Pencatatan (Logging)
-
-Server menggunakan Winston untuk pencatatan terstruktur dengan fitur berikut:
-- Output konsol dengan level log berwarna
-- Semua log disimpan di `logs/combined.log`
-- Log kesalahan disimpan terpisah di `logs/error.log`
-- Format timestamp: YYYY-MM-DD HH:mm:ss
-
-Level log yang digunakan:
-- `error`: Untuk kesalahan dan pengecualian
-- `warn`: Untuk kondisi peringatan
-- `info`: Untuk informasi umum
-- `debug`: Untuk informasi debugging detail
-
-## Menjalankan Server
-
-Mode pengembangan:
+Jalankan test:
 ```bash
-npm run dev
+npm test
 ```
 
-Mode produksi:
+Jalankan test dalam mode watch:
 ```bash
-npm start
+npm run test:watch
 ```
 
-## Tipe Pesan
+## Kontribusi
 
-Server mendukung tipe pesan berikut:
+1. Fork repositori
+2. Buat branch fitur Anda (`git checkout -b fitur/fitur-keren`)
+3. Commit perubahan Anda (`git commit -m 'Menambahkan fitur keren'`)
+4. Push ke branch (`git push origin fitur/fitur-keren`)
+5. Buat Pull Request
 
-1. `echo` - Mengembalikan pesan yang diterima
-2. `broadcast` - Menyebarkan pesan ke semua klien yang terhubung
+## Lisensi
 
-Contoh format pesan:
-```javascript
-{
-    "type": "echo",
-    "payload": "Halo, Dunia!"
-}
-```
-
-## Implementasi Klien
-
-Contoh koneksi klien:
-```javascript
-const ws = new WebSocket('ws://localhost:8080');
-
-ws.onopen = () => {
-    console.log('Terhubung ke server');
-};
-
-ws.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    console.log('Diterima:', data);
-};
-
-// Kirim pesan
-ws.send(JSON.stringify({
-    type: 'echo',
-    payload: 'Halo, Server!'
-}));
-``` 
+Proyek ini dilisensikan di bawah Lisensi MIT - lihat file [LICENSE](LICENSE) untuk detailnya. 
